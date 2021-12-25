@@ -5,14 +5,15 @@ let board = [
 ];
 let players = ["X", "O"];
 let currentPlayer = "X";
+let winner = null;
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(300, 400);
   strokeWeight(4);
+  frameRate(10);
 }
 
 function draw() {
-  cursor("https://avatars0.githubusercontent.com/u/1617169?s=16");
-  background(255);
+  background(240);
   let w = 100;
   let h = 100;
   strokeWeight(4);
@@ -37,6 +38,15 @@ function draw() {
       }
     }
   }
+  if (winner == null) {
+    textSize(32);
+    fill(0);
+    text(`Current Player: ${currentPlayer}`, 10, 350);
+  } else {
+    textSize(32);
+    fill(0);
+    text(`${winner} wins!!`, 0, 350);
+  }
 }
 
 function mouseClicked() {
@@ -44,7 +54,6 @@ function mouseClicked() {
   let y = mouseY;
   let x1 = floor(x / 100);
   let y1 = floor(y / 100);
-  console.log(x, y);
   console.log(x1, y1);
   if (board[x1][y1] == "") {
     board[x1][y1] = currentPlayer;
@@ -56,26 +65,28 @@ function mouseClicked() {
     checkforWinner();
   }
 }
+
 function equal3(a, b, c) {
-  return a == b && b == c && a == c;
+  return a == b && b == c && a == c && a != "";
 }
+
 function checkforWinner() {
   for (let i = 0; i < 3; i++) {
-    if (equal3(board[i][0], board[i][1], board[i][2]) && board[i][0] != "") {
+    if (equal3(board[i][0], board[i][1], board[i][2])) {
       noLoop();
-      console.log(board[i][0]);
+      winner = board[i][0];
     }
-    if (equal3(board[0][i], board[1][i], board[2][i]) && board[0][i] != "") {
+    if (equal3(board[0][i], board[1][i], board[2][i])) {
       noLoop();
-      console.log(board[0][i]);
+      winner = board[0][i];
     }
   }
-  if (equal3(board[0][0], board[1][1], board[2][2]) && board[0][0] != "") {
+  if (equal3(board[0][0], board[1][1], board[2][2])) {
     noLoop();
-    console.log(board[0][0]);
+    winner = board[0][0];
   }
   if (equal3(board[0][2], board[1][1], board[2][0]) && board[1][1] != "") {
     noLoop();
-    console.log(board[1][1]);
+    winner = board[1][1];
   }
 }
