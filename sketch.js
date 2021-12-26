@@ -6,10 +6,24 @@ let board = [
 let players = ["X", "O"];
 let currentPlayer = "X";
 let winner = null;
+let moves = 0;
 function setup() {
   createCanvas(300, 400);
   strokeWeight(4);
   frameRate(10);
+  var button = createButton("reset");
+  button.mouseClicked(resetSketch);
+}
+function resetSketch() {
+  board = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ];
+  currentPlayer = "X";
+  winner = null;
+  moves = 0;
+  loop();
 }
 
 function draw() {
@@ -42,6 +56,10 @@ function draw() {
     textSize(32);
     fill(0);
     text(`Current Player: ${currentPlayer}`, 10, 350);
+  } else if (winner == "Tie!!") {
+    textSize(32);
+    fill(0);
+    text(`No one wins!!`, 0, 350);
   } else {
     textSize(32);
     fill(0);
@@ -54,7 +72,7 @@ function mouseClicked() {
   let y = mouseY;
   let x1 = floor(x / 100);
   let y1 = floor(y / 100);
-  console.log(x1, y1);
+  // console.log(x1, y1);
   if (board[x1][y1] == "") {
     board[x1][y1] = currentPlayer;
     if (currentPlayer == "X") {
@@ -62,6 +80,7 @@ function mouseClicked() {
     } else {
       currentPlayer = "X";
     }
+    moves++;
     checkforWinner();
   }
 }
@@ -88,5 +107,10 @@ function checkforWinner() {
   if (equal3(board[0][2], board[1][1], board[2][0]) && board[1][1] != "") {
     noLoop();
     winner = board[1][1];
+  }
+  if (moves == 9 && winner == null) {
+    noLoop();
+    winner = "Tie!!";
+    // console.log(winner);
   }
 }
